@@ -19,18 +19,27 @@ export default function ProductHero({ product, products, index, size, onSize, on
   return (
     <>
       <div className="copy">
+        <p className="copy__eyebrow">Air Max Dn SE</p>
+
         <h1 className="copy__title">
-          <span className="copy__title-line">Wear your</span>
-          <span className="copy__title-line">Style with</span>
-          <span className="copy__title-line">Comfort</span>
+          Step light,
+          <span className="copy__title-accent">move loud</span>
         </h1>
-        <p className="copy__model">
-          Nike Air Max Dn SE · {product.name} · {product.price}
-        </p>
+
+        <p className="copy__lede">{product.description}</p>
+
+        <div className="copy__meta">
+          <span className="copy__price">{product.price}</span>
+          <span className="copy__colour">
+            <span className="copy__dot" style={{ background: product.accent }} aria-hidden="true" />
+            {product.name}
+          </span>
+        </div>
       </div>
 
       <div className="picker">
-        <div className="picker__sizes">
+        <p className="picker__label">Select size (US)</p>
+        <div className="picker__sizes" role="group" aria-label="Select size">
           {sizes.map((s) => (
             <button
               key={s}
@@ -47,10 +56,35 @@ export default function ProductHero({ product, products, index, size, onSize, on
       </div>
 
       <div className="controls">
-        <div className="controls__text">
-          <p className="controls__desc">{product.description}</p>
-          <p className="controls__legal">© 2024 All rights reserved</p>
-        </div>
+        <ul className="social" aria-label="Follow Nike">
+          <li>
+            <a className="social__link" href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a className="social__link" href="#" aria-label="X">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M4 4h3.9l4.3 5.9L17.6 4H20l-6.6 7.6L20.4 20h-3.9l-4.6-6.3L5.9 20H3.5l7-8Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a className="social__link" href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2.6" y="5.4" width="18.8" height="13.2" rx="4.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <path d="m10.4 9.4 4.7 2.6-4.7 2.6Z" fill="currentColor" />
+              </svg>
+            </a>
+          </li>
+        </ul>
 
         <div className="qty">
           <button

@@ -2,31 +2,100 @@
 
 .copy {
   grid-area: copy;
-  max-width: 360px;
+  align-self: start;
+  /* drops in line with the size picker on the right */
+  margin-top: clamp(48px, 11vh, 120px);
+  max-width: 400px;
+  /* one soft reveal for the whole block instead of per-line effects */
+  animation: copy-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* big sentence-case headline, three stacked lines */
+.copy__eyebrow {
+  margin: 0 0 18px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .copy__title {
   margin: 0;
   font-family: var(--font-body);
-  font-weight: 800;
-  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
-  line-height: 1.06;
-  letter-spacing: -0.03em;
-  display: flex;
-  flex-direction: column;
+  font-weight: 700;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
 }
 
-.copy__title-line {
+/* the whole idea of the headline: one word set in italic serif, so the
+   contrast between the two faces carries it — no colour, no decoration */
+.copy__title-accent {
   display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.16em;
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
 
-.copy__model {
-  margin: 22px 0 0;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
+.copy__lede {
+  margin: 20px 0 0;
+  max-width: 34ch;
+  font-size: 0.82rem;
+  line-height: 1.75;
   color: var(--muted);
+}
+
+.copy__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.copy__price {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.copy__colour {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.copy__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+  transition: background-color var(--bg-transition);
+}
+
+@keyframes copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy {
+    animation: none;
+  }
 }
 
 /* ---------- right size picker ---------- */
@@ -34,42 +103,85 @@
 .picker {
   grid-area: picker;
   justify-self: end;
+  align-self: start;
+  /* sits well below the nav so it never reads as a second header */
+  margin-top: clamp(48px, 11vh, 120px);
   text-align: right;
+}
+
+.picker__label {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .picker__sizes {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   justify-content: flex-end;
 }
 
 .size-btn {
-  width: 38px;
-  height: 38px;
+  position: relative;
+  z-index: 0;
+  width: 42px;
+  height: 42px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.24);
-  backdrop-filter: blur(6px);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  font-size: 0.76rem;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 200ms ease, border-color 200ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* white knob springs out from behind the number when picked */
+.size-btn::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -1px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+  transform: scale(0.5);
+  opacity: 0;
+  transition: transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms ease;
 }
 
 .size-btn:hover {
+  opacity: 1;
   border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+
+.size-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .size-btn.is-active {
-  background: #fff;
-  border-color: #fff;
-  color: var(--ink);
+  opacity: 1;
+  border-color: transparent;
   font-weight: 600;
+  transform: none;
+}
+
+.size-btn.is-active::before {
+  transform: scale(1);
+  opacity: 1;
 }
 
 .picker__note {
-  margin: 14px 0 0;
+  margin: 12px 0 0;
   font-size: 0.7rem;
   letter-spacing: 0.01em;
   color: var(--muted);
@@ -85,28 +197,37 @@
   gap: 16px;
 }
 
-.controls__text {
-  max-width: 300px;
+/* social row, bottom-left: bare glyphs, no chrome around them */
+.social {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
 }
 
-.controls__desc {
-  margin: 0;
-  font-size: 0.72rem;
-  line-height: 1.7;
-  color: var(--muted);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  overflow: hidden;
+.social__link {
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  opacity: 0.55;
+  transition: opacity 200ms ease;
 }
 
-.controls__legal {
-  margin: 14px 0 0;
-  font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-  opacity: 0.7;
+.social__link:hover {
+  opacity: 1;
+}
+
+.social__link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.social__link svg {
+  width: 17px;
+  height: 17px;
 }
 
 /* quantity stepper, centred under the shoe */
@@ -119,10 +240,14 @@
 }
 
 .qty__btn {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   display: grid;
   place-items: center;
+  /* the UA button padding squeezes the content box narrower than the icon,
+     which makes a centred-but-overflowing glyph fall back to the left edge */
+  padding: 0;
+  line-height: 0;
   border-radius: 8px;
   border: 1px solid var(--line);
   background: transparent;
@@ -136,8 +261,9 @@
 }
 
 .qty__btn svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
+  display: block;
 }
 
 .qty__value {
@@ -151,7 +277,8 @@
   justify-self: end;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  /* the pill sits centred under the arrow row above it */
+  align-items: center;
   gap: 14px;
   margin-bottom: 34px;
 }
@@ -170,15 +297,15 @@
 }
 
 .buy-now-btn {
-  height: 44px;
-  padding: 0 30px;
+  height: 38px;
+  padding: 0 26px;
   border-radius: 999px;
   border: 0;
   background: #fff;
   color: var(--ink);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   letter-spacing: 0.01em;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
   transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms ease;
@@ -192,6 +319,11 @@
 .buy-now-btn:active {
   transform: translateY(0);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.buy-now-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .round-btn {
@@ -219,12 +351,6 @@
 @media (max-width: 720px) {
   .controls {
     grid-template-columns: 1fr auto;
-  }
-
-  .controls__text {
-    grid-column: 1 / -1;
-    order: 2;
-    max-width: none;
   }
 
   .qty {

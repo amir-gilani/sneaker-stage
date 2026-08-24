@@ -49,4 +49,4 @@ export const products: Product[] = [
   },
 ]
 
-export const sizes = ['8', '9', '10', '11', '12.5'] as const
+export const sizes = ['9', '10', '11'] as const

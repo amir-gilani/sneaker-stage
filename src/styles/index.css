@@ -1,6 +1,7 @@
 :root {
   --font-display: 'Unbounded', system-ui, sans-serif;
   --font-body: 'Manrope', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   --ink: #14161a;
