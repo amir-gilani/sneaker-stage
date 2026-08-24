@@ -4,12 +4,15 @@ import ProductHero from './components/ProductHero'
 import SneakerStage from './components/SneakerStage'
 import type { Direction } from './components/SneakerStage'
 import { products } from './data/products'
+import type { CartLine } from './data/cart'
+import { addLine } from './data/cart'
 import './styles/app.css'
 
 export default function App() {
   const [index, setIndex] = useState(0)
   const [direction, setDirection] = useState<Direction>(1)
   const [size, setSize] = useState('10')
+  const [cart, setCart] = useState<CartLine[]>([])
   const animating = useRef(false)
 
   const goTo = useCallback(
@@ -31,7 +34,11 @@ export default function App() {
 
   return (
     <div className="page" style={{ background: product.bg }}>
-      <Nav />
+      <Nav
+        cart={cart}
+        onRemove={(key) => setCart((c) => c.filter((l) => l.key !== key))}
+        onClear={() => setCart([])}
+      />
 
       <main className="hero">
         <div className="hero__wordmark" aria-hidden="true">
@@ -54,6 +61,7 @@ export default function App() {
             index={index}
             size={size}
             onSize={setSize}
+            onAdd={(qty) => setCart((c) => addLine(c, product, size, qty))}
             onPrev={() => step(-1)}
             onNext={() => step(1)}
           />

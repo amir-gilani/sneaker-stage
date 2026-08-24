@@ -1,8 +1,31 @@
+import { useEffect, useState } from 'react'
+import type { CartLine } from '../data/cart'
+import { cartCount, cartTotal, formatCents } from '../data/cart'
 import '../styles/nav.css'
 
 const links = ['Products', 'About', 'Category', 'Contact']
 
-export default function Nav() {
+interface Props {
+  cart: CartLine[]
+  onRemove: (key: string) => void
+  onClear: () => void
+}
+
+export default function Nav({ cart, onRemove, onClear }: Props) {
+  const [current, setCurrent] = useState(links[0])
+  const [open, setOpen] = useState(false)
+  const count = cartCount(cart)
+
+  // Escape closes the drawer; the overlay handles pointer dismissal
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open])
+
   return (
     <header className="nav">
       <a className="nav__logo" href="#" aria-label="Nike home">
@@ -16,9 +39,15 @@ export default function Nav() {
 
       <nav className="nav__links" aria-label="Categories">
         {links.map((l) => (
-          <a key={l} href="#" className={l === 'Products' ? 'is-current' : undefined}>
+          <button
+            key={l}
+            type="button"
+            className={l === current ? 'is-current' : undefined}
+            aria-current={l === current ? 'page' : undefined}
+            onClick={() => setCurrent(l)}
+          >
             {l}
-          </a>
+          </button>
         ))}
       </nav>
 
@@ -34,19 +63,92 @@ export default function Nav() {
             />
           </svg>
         </button>
-        <button type="button" className="icon-btn icon-btn--cart" aria-label="Cart, 1 item">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M5 7h14l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.6H8a1.8 1.8 0 0 1-1.8-1.6Z M9 9V6.2a3 3 0 1 1 6 0V9"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span className="icon-btn__dot" />
-        </button>
+        <div className="cart">
+          <button
+            type="button"
+            className="icon-btn icon-btn--cart"
+            aria-label={count === 0 ? 'Cart, empty' : `Cart, ${count} item${count === 1 ? '' : 's'}`}
+            aria-expanded={open}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M5 7h14l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.6H8a1.8 1.8 0 0 1-1.8-1.6Z M9 9V6.2a3 3 0 1 1 6 0V9"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            </svg>
+            {count > 0 && <span className="icon-btn__count">{count}</span>}
+          </button>
+
+          {open && (
+            <>
+              <div className="cart__overlay" onClick={() => setOpen(false)} />
+
+              <aside className="cart__drawer" role="dialog" aria-modal="true" aria-label="Bag">
+                <header className="cart__head">
+                  <h2 className="cart__title">Your bag</h2>
+                  <button
+                    type="button"
+                    className="cart__close"
+                    aria-label="Close bag"
+                    onClick={() => setOpen(false)}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </header>
+
+                {cart.length === 0 ? (
+                  <p className="cart__empty">Your bag is empty.</p>
+                ) : (
+                  <ul className="cart__list">
+                    {cart.map((l) => (
+                      <li key={l.key} className="cart__line">
+                        <span className="cart__name">
+                          {l.name}
+                          <span className="cart__size">US {l.size}</span>
+                        </span>
+                        <span className="cart__qty">×{l.qty}</span>
+                        <span className="cart__price">{formatCents(l.qty * l.cents)}</span>
+                        <button
+                          type="button"
+                          className="cart__remove"
+                          aria-label={`Remove ${l.name}, size ${l.size}`}
+                          onClick={() => onRemove(l.key)}
+                        >
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                          </svg>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="cart__foot">
+                  <span className="cart__total-label">Total</span>
+                  <span className="cart__total">{formatCents(cartTotal(cart))}</span>
+                </div>
+
+                <button type="button" className="cart__checkout">Checkout</button>
+
+                <button
+                  type="button"
+                  className="cart__clear"
+                  disabled={cart.length === 0}
+                  onClick={onClear}
+                >
+                  Empty bag
+                </button>
+              </aside>
+            </>
+          )}
+        </div>
       </div>
     </header>
   )

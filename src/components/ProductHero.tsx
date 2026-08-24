@@ -9,11 +9,21 @@ interface Props {
   index: number
   size: string
   onSize: (s: string) => void
+  onAdd: (qty: number) => void
   onPrev: () => void
   onNext: () => void
 }
 
-export default function ProductHero({ product, products, index, size, onSize, onPrev, onNext }: Props) {
+export default function ProductHero({
+  product,
+  products,
+  index,
+  size,
+  onSize,
+  onAdd,
+  onPrev,
+  onNext,
+}: Props) {
   const [qty, setQty] = useState(1)
 
   return (
@@ -127,7 +137,9 @@ export default function ProductHero({ product, products, index, size, onSize, on
             </button>
           </div>
 
-          <button type="button" className="buy-now-btn">Buy Now</button>
+          <button type="button" className="buy-now-btn" onClick={() => onAdd(qty)}>
+            Buy Now
+          </button>
         </div>
       </div>
     </>
