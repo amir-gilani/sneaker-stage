@@ -1,0 +1,112 @@
+.nav {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 6px 18px;
+}
+
+.nav__logo {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+  transition: opacity 200ms ease;
+}
+
+.nav__logo:hover {
+  opacity: 0.72;
+}
+
+.nav__logo svg {
+  width: 62px;
+  height: auto;
+  /* optical lift: the swoosh's visual mass sits low, so nudge it up to sit
+     on the same line as the nav links and the icon buttons */
+  transform: translateY(-2px);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
+  shape-rendering: geometricPrecision;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(8px);
+}
+
+.nav__links a {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0.72;
+  transition: background-color 200ms ease, opacity 200ms ease;
+}
+
+.nav__links a:hover {
+  opacity: 1;
+}
+
+.nav__links a.is-current {
+  opacity: 1;
+  font-weight: 600;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(8px);
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--line-strong);
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-btn__dot {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .nav__links {
+    display: none;
+  }
+}

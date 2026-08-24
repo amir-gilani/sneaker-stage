@@ -1,0 +1,55 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stage__shoe,
+.stage__shadow {
+  position: absolute;
+  will-change: transform, opacity;
+  transform-origin: 50% 50%;
+}
+
+.stage__shoe {
+  width: min(40vw, 460px);
+}
+
+.stage__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.28));
+}
+
+/* soft elliptical floor shadow */
+.stage__shadow {
+  width: min(34vw, 390px);
+  height: min(7vw, 74px);
+  margin-top: min(13vw, 140px);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  filter: blur(26px);
+}
+
+@media (max-width: 640px) {
+  .stage__shoe {
+    width: 62vw;
+  }
+
+  .stage__shadow {
+    width: 52vw;
+    height: 10vw;
+    margin-top: 20vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    transition: none;
+  }
+}

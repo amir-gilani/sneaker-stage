@@ -1,0 +1,237 @@
+/* ---------- left copy block ---------- */
+
+.copy {
+  grid-area: copy;
+  max-width: 360px;
+}
+
+/* big sentence-case headline, three stacked lines */
+.copy__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  display: flex;
+  flex-direction: column;
+}
+
+.copy__title-line {
+  display: block;
+}
+
+.copy__model {
+  margin: 22px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* ---------- right size picker ---------- */
+
+.picker {
+  grid-area: picker;
+  justify-self: end;
+  text-align: right;
+}
+
+.picker__sizes {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.size-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.size-btn:hover {
+  border-color: var(--line-strong);
+}
+
+.size-btn.is-active {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.picker__note {
+  margin: 14px 0 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+/* ---------- bottom bar ---------- */
+
+.controls {
+  grid-area: controls;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 16px;
+}
+
+.controls__text {
+  max-width: 300px;
+}
+
+.controls__desc {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.controls__legal {
+  margin: 14px 0 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* quantity stepper, centred under the shoe */
+.qty {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.qty__btn {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.qty__btn:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.qty__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.qty__value {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  min-width: 12px;
+  text-align: center;
+}
+
+.controls__side {
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 34px;
+}
+
+.controls__arrows {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls__count {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.buy-now-btn {
+  height: 44px;
+  padding: 0 30px;
+  border-radius: 999px;
+  border: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms ease;
+}
+
+.buy-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+}
+
+.buy-now-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.round-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(6px);
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.round-btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--line-strong);
+}
+
+.round-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 720px) {
+  .controls {
+    grid-template-columns: 1fr auto;
+  }
+
+  .controls__text {
+    grid-column: 1 / -1;
+    order: 2;
+    max-width: none;
+  }
+
+  .qty {
+    justify-self: start;
+  }
+
+  .controls__side {
+    margin-bottom: 12px;
+  }
+}
