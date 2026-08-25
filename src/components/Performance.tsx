@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import type { CSSProperties } from 'react'
 import type { Product } from '../data/products'
 import '../styles/performance.css'
 
@@ -134,13 +135,32 @@ export default function Performance({ product }: Props) {
   }, [])
 
   return (
-    <section className="perf" ref={root} aria-labelledby="perf-title">
+    <section
+      className="perf"
+      ref={root}
+      aria-labelledby="perf-title"
+      style={{ '--tint': product.bg, '--accent': product.accent } as CSSProperties}
+    >
+      {/* decorative layers, in the same register as the hero: one soft wash of
+          the live colourway, one oversized ghost word, one film of grain */}
+      <span className="perf__wash" aria-hidden="true" />
+      <span className="perf__ghost" aria-hidden="true">
+        AIR
+      </span>
+      <span className="perf__grain" aria-hidden="true" />
+      <span className="perf__grip" aria-hidden="true" />
+
       <div className="perf__inner">
         <header className="perf__head" data-reveal>
-          <p className="perf__eyebrow">
-            <span className="perf__dot" style={{ background: product.accent }} aria-hidden="true" />
-            Performance · {product.name}
-          </p>
+          <div className="perf__topline">
+            <p className="perf__eyebrow">
+              <span className="perf__dot" aria-hidden="true" />
+              Performance · {product.name}
+            </p>
+            <span className="perf__marker" aria-hidden="true">
+              02
+            </span>
+          </div>
           <h2 className="perf__title" id="perf-title">
             Built to be
             <span className="perf__title-accent">felt, not noticed</span>
@@ -177,6 +197,23 @@ export default function Performance({ product }: Props) {
             </div>
           ))}
         </dl>
+
+        <div className="perf__foot" data-reveal>
+          <p className="perf__note">Air Max Dn SE · designed in Beaverton, tested everywhere else</p>
+          <button type="button" className="perf__cta">
+            Explore the tech
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M5 12h13m-5.5-6.5L19 12l-6.5 6.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
   )
