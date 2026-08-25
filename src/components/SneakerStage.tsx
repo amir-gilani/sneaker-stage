@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Product } from '../data/products'
-import SneakerIllustration from './SneakerIllustration'
+import SneakerPhoto from './SneakerPhoto'
 import '../styles/stage.css'
 
 export type Direction = 1 | -1 // 1 = forward, -1 = backward
@@ -178,23 +178,13 @@ export default function SneakerStage({ products, index, direction, onTransitionE
         <>
           <div className="stage__shadow" ref={outShadowRef} />
           <div className="stage__shoe" ref={outShoeRef}>
-            <SneakerIllustration
-              body={outgoing.body}
-              panel={outgoing.panel}
-              accent={outgoing.accent}
-              className="stage__svg"
-            />
+            <SneakerPhoto name={outgoing.name} tint={outgoing.tint} className="stage__photo" />
           </div>
         </>
       )}
       <div className="stage__shadow" ref={shadowRef} />
       <div className="stage__shoe" ref={shoeRef} key={current.id}>
-        <SneakerIllustration
-          body={current.body}
-          panel={current.panel}
-          accent={current.accent}
-          className="stage__svg"
-        />
+        <SneakerPhoto name={current.name} tint={current.tint} className="stage__photo" />
       </div>
     </div>
   )

@@ -35,21 +35,25 @@
 }
 
 .stage__shoe {
-  width: min(40vw, 460px);
+  width: min(46vw, 560px);
 }
 
-.stage__svg {
+/* the cut-out product shot is stored at 2x the widest layout size, so it is
+   only ever scaled down — the tint recolours the base blue colourway and the
+   drop shadow has to be chained after it or the inline filter would drop it */
+.stage__photo {
   width: 100%;
   height: auto;
   display: block;
-  filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.28));
+  filter: var(--tint, none) drop-shadow(0 26px 34px rgba(0, 0, 0, 0.28));
+  -webkit-user-drag: none;
 }
 
 /* soft elliptical floor shadow */
 .stage__shadow {
-  width: min(34vw, 390px);
-  height: min(7vw, 74px);
-  margin-top: min(13vw, 140px);
+  width: min(32vw, 380px);
+  height: min(6vw, 64px);
+  margin-top: min(10vw, 128px);
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.55);
   filter: blur(26px);
@@ -57,13 +61,13 @@
 
 @media (max-width: 640px) {
   .stage__shoe {
-    width: 62vw;
+    width: 76vw;
   }
 
   .stage__shadow {
-    width: 52vw;
-    height: 10vw;
-    margin-top: 20vw;
+    width: 54vw;
+    height: 9vw;
+    margin-top: 17vw;
   }
 
   .stage__glow {
