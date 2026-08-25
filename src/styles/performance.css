@@ -1,0 +1,199 @@
+/* slide 2 — rides up over the pinned hero on plain document scroll */
+.perf {
+  position: relative;
+  /* above the page grain (4) and the nav (5) so it genuinely covers slide 1 */
+  z-index: 6;
+  /* content-sized, with a floor so it still reads as a full slide */
+  min-height: 66vh;
+  padding: clamp(40px, 5.2vw, 74px) clamp(20px, 5vw, 76px) clamp(36px, 4.2vw, 60px);
+  border-radius: clamp(26px, 3vw, 44px) clamp(26px, 3vw, 44px) 0 0;
+  background: var(--ink);
+  color: #fff;
+  box-shadow: 0 -28px 70px rgba(0, 0, 0, 0.35);
+}
+
+.perf__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* ---------- head ---------- */
+
+.perf__head {
+  max-width: 640px;
+}
+
+.perf__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.perf__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  transition: background-color var(--bg-transition);
+}
+
+.perf__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5vw, 3.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.perf__title-accent {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.perf__lede {
+  max-width: 46ch;
+  margin: 18px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+/* ---------- feature cards ---------- */
+
+.perf__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin: clamp(26px, 3.6vw, 46px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.perf-card {
+  position: relative;
+  padding: 26px 24px 28px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.045);
+  transition: background-color 260ms ease, border-color 260ms ease;
+}
+
+.perf-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.perf-card__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.perf-card__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.perf-card__tag {
+  position: absolute;
+  top: 26px;
+  right: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.perf-card__title {
+  margin: 0 0 8px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.perf-card__body {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ---------- spec strip ---------- */
+
+.perf__specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1px;
+  margin: clamp(20px, 2.6vw, 34px) 0 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.perf__spec {
+  padding: 22px 24px;
+  background: var(--ink);
+}
+
+.perf__spec dt {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.46);
+}
+
+.perf__spec dd {
+  margin: 8px 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- reveal ---------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition-property: opacity, transform;
+  transition-duration: 640ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* cards reveal and still keep their hover fade */
+.perf-card[data-reveal] {
+  transition-property: opacity, transform, background-color, border-color;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .perf-card {
+    padding: 22px 20px 24px;
+  }
+}

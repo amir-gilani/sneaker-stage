@@ -1,11 +1,22 @@
 .page {
   min-height: 100%;
+  transition: background-color var(--bg-transition);
+}
+
+/* slide 1 sticks to the top of the viewport, so slide 2 reads as a panel
+   riding up over it — plain document scroll, which wheel, trackpad, keys
+   and touch all drive the same way */
+.slide--hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   padding: clamp(16px, 2.4vw, 34px);
   /* extra room at the foot so the lowered Buy it pill stays inside the frame */
   padding-bottom: clamp(30px, 3.4vw, 48px);
-  transition: background-color var(--bg-transition);
+  overflow: hidden;
 }
 
 .hero {

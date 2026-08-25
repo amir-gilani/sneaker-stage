@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 import Nav from './components/Nav'
+import Performance from './components/Performance'
 import ProductHero from './components/ProductHero'
 import SneakerStage from './components/SneakerStage'
 import type { Direction } from './components/SneakerStage'
@@ -34,39 +35,44 @@ export default function App() {
 
   return (
     <div className="page" style={{ background: product.bg }}>
-      <Nav
-        cart={cart}
-        onRemove={(key) => setCart((c) => c.filter((l) => l.key !== key))}
-        onClear={() => setCart([])}
-      />
-
-      <main className="hero">
-        <div className="hero__wordmark" aria-hidden="true">
-          NIKE
-        </div>
-
-        <SneakerStage
-          products={products}
-          index={index}
-          direction={direction}
-          onTransitionEnd={() => {
-            animating.current = false
-          }}
+      {/* slide 1 — pinned to the viewport while slide 2 scrolls up over it */}
+      <div className="slide slide--hero">
+        <Nav
+          cart={cart}
+          onRemove={(key) => setCart((c) => c.filter((l) => l.key !== key))}
+          onClear={() => setCart([])}
         />
 
-        <div className="hero__grid">
-          <ProductHero
-            product={product}
+        <main className="hero">
+          <div className="hero__wordmark" aria-hidden="true">
+            NIKE
+          </div>
+
+          <SneakerStage
             products={products}
             index={index}
-            size={size}
-            onSize={setSize}
-            onAdd={(qty) => setCart((c) => addLine(c, product, size, qty))}
-            onPrev={() => step(-1)}
-            onNext={() => step(1)}
+            direction={direction}
+            onTransitionEnd={() => {
+              animating.current = false
+            }}
           />
-        </div>
-      </main>
+
+          <div className="hero__grid">
+            <ProductHero
+              product={product}
+              products={products}
+              index={index}
+              size={size}
+              onSize={setSize}
+              onAdd={(qty) => setCart((c) => addLine(c, product, size, qty))}
+              onPrev={() => step(-1)}
+              onNext={() => step(1)}
+            />
+          </div>
+        </main>
+      </div>
+
+      <Performance product={product} />
     </div>
   )
 }

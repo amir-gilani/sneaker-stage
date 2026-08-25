@@ -56,9 +56,10 @@
   transition: background-color 200ms ease, box-shadow 200ms ease, opacity 200ms ease;
 }
 
-.nav__links button:hover {
+/* hover only deepens the label - no pill behind it, so the white
+   background stays reserved for the selected link */
+.nav__links button:hover:not(.is-current) {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.4);
 }
 
 .nav__links button:focus-visible {
