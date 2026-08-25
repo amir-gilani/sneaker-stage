@@ -7,8 +7,14 @@
   /* above the page grain (4) and the nav (5) so it genuinely covers slide 1 */
   z-index: 6;
   overflow: hidden;
-  min-height: 60vh;
-  padding: clamp(34px, 4.2vw, 58px) clamp(20px, 5vw, 76px) clamp(30px, 3.4vw, 46px);
+  /* exactly one viewport tall, so the document bottom lands on the same stop
+     the Performance cue scrolls to — a wheel scroll and the cue agree */
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* vertical rhythm keyed to vh as well as vw so the content still fits a
+     short laptop viewport instead of pushing the panel past one screen */
+  padding: clamp(26px, 3vh + 1vw, 58px) clamp(20px, 5vw, 76px) clamp(24px, 2.6vh + 0.8vw, 46px);
   border-radius: clamp(26px, 3vw, 44px) clamp(26px, 3vw, 44px) 0 0;
   background: linear-gradient(180deg, #16181d 0%, var(--ink) 46%, #0d0e12 100%);
   color: #fff;
@@ -73,8 +79,16 @@
 
 .perf__inner {
   position: relative;
+  flex: 1;
+  width: 100%;
   max-width: 1180px;
   margin: 0 auto;
+  /* head, cards, specs and foot share whatever height is left over, so the
+     slack reads as breathing room rather than a dead strip at the bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(14px, 2vh, 30px);
 }
 
 /* ---------- head ---------- */
@@ -156,7 +170,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 12px;
-  margin: clamp(20px, 2.6vw, 32px) 0 0;
+  /* the column gap spaces these blocks now */
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -168,7 +183,10 @@
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(6px);
+  /* no backdrop-filter here: with the hover lift Chrome re-samples the
+     backdrop mid-transform and flashes the ghost word / grain behind the
+     card. A flat translucent fill gives the same look without the glitch. */
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0));
   transition: background-color 300ms ease, border-color 300ms ease,
     transform 380ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 380ms ease;
 }
@@ -188,7 +206,7 @@
 
 .perf-card:hover {
   transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.075);
+  background-color: rgba(255, 255, 255, 0.075);
   border-color: rgba(255, 255, 255, 0.24);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
 }
@@ -257,7 +275,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 1px;
-  margin: clamp(16px, 2vw, 26px) 0 0;
+  margin: 0;
   border-radius: 20px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.14);
@@ -298,7 +316,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: clamp(16px, 2vw, 24px);
+  margin-top: 0;
 }
 
 .perf__note {
@@ -395,5 +413,20 @@
 
   .perf__ghost {
     font-size: 40vw;
+  }
+}
+
+/* the reveal rule ([data-reveal].is-in { transform: none }) matches with the
+   same specificity as .perf-card:hover but sits later in the file, so it was
+   cancelling the hover lift and leaving the card mid-transition — which is
+   what made the panel behind the cards flicker. Re-state the lift with the
+   reveal class included so hover wins cleanly. */
+.perf-card[data-reveal].is-in:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .perf-card[data-reveal].is-in:hover {
+    transform: none;
   }
 }

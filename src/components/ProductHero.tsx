@@ -26,6 +26,11 @@ export default function ProductHero({
 }: Props) {
   const [qty, setQty] = useState(1)
 
+  // slide 2 is a plain document scroll away; the cue drives that scroll, and
+  // the panel is exactly one viewport tall so a wheel scroll stops here too
+  const onScrollDown = () =>
+    document.querySelector(".perf")?.scrollIntoView({ behavior: "smooth", block: "start" })
+
   return (
     <>
       <div className="copy">
@@ -96,27 +101,40 @@ export default function ProductHero({
           </li>
         </ul>
 
-        <div className="qty">
-          <button
-            type="button"
-            className="qty__btn"
-            aria-label="Decrease quantity"
-            onClick={() => setQty((q) => Math.max(1, q - 1))}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 12h10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          </button>
-          <span className="qty__value">{qty}</span>
-          <button
-            type="button"
-            className="qty__btn"
-            aria-label="Increase quantity"
-            onClick={() => setQty((q) => Math.min(9, q + 1))}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 7v10M7 12h10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
+        <div className="controls__center">
+          <div className="qty">
+            <button
+              type="button"
+              className="qty__btn"
+              aria-label="Decrease quantity"
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 12h10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
+            <span className="qty__value">{qty}</span>
+            <button
+              type="button"
+              className="qty__btn"
+              aria-label="Increase quantity"
+              onClick={() => setQty((q) => Math.min(9, q + 1))}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 7v10M7 12h10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+
+          {/* the only tell on slide 1 that a second slide exists: a ghost pill
+              with a chevron falling through it on a loop */}
+          <button type="button" className="scroll-cue" onClick={onScrollDown}>
+            <span className="scroll-cue__label">Performance</span>
+            <span className="scroll-cue__track" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
           </button>
         </div>
 

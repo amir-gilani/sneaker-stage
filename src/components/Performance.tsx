@@ -127,7 +127,10 @@ export default function Performance({ product }: Props) {
           io.unobserve(entry.target)
         })
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.15 },
+      // no negative bottom margin: the foot row sits in the last few percent of
+      // the page, so a -12% inset meant it never intersected and stayed at
+      // opacity 0 — the "empty space" at the bottom of the panel
+      { rootMargin: '0px', threshold: 0.05 },
     )
 
     items.forEach((i) => io.observe(i))

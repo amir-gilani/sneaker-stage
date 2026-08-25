@@ -231,12 +231,102 @@
 }
 
 /* quantity stepper, centred under the shoe */
-.qty {
+/* qty widget with the scroll cue stacked under it, bottom-centre */
+.controls__center {
   justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  /* the column is bottom-aligned with the rest of the controls row, so the
+     cue is dropped by pulling that bottom edge into the slide padding */
+  margin-bottom: -14px;
+}
+
+.qty {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 6px;
+}
+
+/* the tell that slide 2 exists: a ghost pill in the same family as Buy Now,
+   with a chevron falling through it on a loop */
+.scroll-cue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 8px 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  transition: background-color 260ms ease, border-color 260ms ease, color 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scroll-cue__label {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* a window the chevron falls through, so the loop reads as motion down the
+   page rather than an icon twitching in place */
+.scroll-cue__track {
+  display: block;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.scroll-cue__track svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  animation: cue-fall 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.scroll-cue:hover {
+  transform: translateY(-1px);
+  background: #fff;
+  border-color: #fff;
+  color: var(--ink);
+}
+
+.scroll-cue:active {
+  transform: translateY(0);
+}
+
+.scroll-cue:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@keyframes cue-fall {
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  35%,
+  60% {
+    transform: translateY(1px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(9px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue__track svg {
+    animation: none;
+    transform: translateY(1px);
+  }
 }
 
 .qty__btn {
@@ -353,8 +443,9 @@
     grid-template-columns: 1fr auto;
   }
 
-  .qty {
+  .controls__center {
     justify-self: start;
+    align-items: flex-start;
   }
 
   .controls__side {
