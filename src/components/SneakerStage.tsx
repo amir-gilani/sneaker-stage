@@ -17,6 +17,8 @@ const EXIT_MS = 520
 const OVERSHOOT = 0.27
 /** Fraction of the entry spent flying in; the rest is the spring settle. */
 const SETTLE_FROM = 0.55
+/** Leftward nudge of the entry arc, as a fraction of the viewport width. */
+const ARC_SHIFT_X = -0.2
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
 const easeInCubic = (t: number) => t * t * t
@@ -88,7 +90,13 @@ export default function SneakerStage({ products, index, direction, onTransitionE
 
     // Control points sit further out along the corner diagonal than the
     // straight-line midpoint, which is what bends the path into an arc.
-    const inCtrl = { x: inFrom.x * 0.72 + w * 0.16 * dir, y: inFrom.y * 0.78 - h * 0.14 * dir }
+    // ARC_SHIFT_X nudges the incoming arc leftwards in screen space (not
+    // mirrored by direction), so the shoe swings back in a little left of
+    // centre whichever way the colourway is stepped.
+    const inCtrl = {
+      x: inFrom.x * 0.72 + w * 0.16 * dir + ARC_SHIFT_X * w,
+      y: inFrom.y * 0.78 - h * 0.14 * dir,
+    }
     const outCtrl = { x: outTo.x * 0.42 - w * 0.14 * dir, y: outTo.y * 0.34 - h * 0.18 * dir }
 
     const enterRot = dir * 22
