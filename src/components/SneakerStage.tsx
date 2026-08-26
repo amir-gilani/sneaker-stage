@@ -13,12 +13,19 @@ interface Props {
 }
 
 const ENTER_MS = 900
-const EXIT_MS = 520
+const EXIT_MS = 640
 const OVERSHOOT = 0.27
 /** Fraction of the entry spent flying in; the rest is the spring settle. */
 const SETTLE_FROM = 0.55
 /** Leftward nudge of the entry arc, as a fraction of the viewport width. */
 const ARC_SHIFT_X = -0.2
+/** Shape of the corner diagonal the shoe travels along. */
+const DIAG_X = 0.62
+const DIAG_Y = 0.72
+/** Clear the edge by this much more than the shoe's own half-span. */
+const OFFSCREEN_PAD = 32
+/** Size the shoe travels at, so it reads as distance rather than a shrink. */
+const FLY_SCALE = 0.88
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
 const easeInCubic = (t: number) => t * t * t
@@ -84,9 +91,26 @@ export default function SneakerStage({ products, index, direction, onTransitionE
     const dir = dirRef.current
     const w = window.innerWidth
     const h = window.innerHeight
+
+    // How far along the diagonal the shoe has to travel to be fully past the
+    // edge of the screen. Measured from where the shoe actually rests rather
+    // than assumed to be centred, and cleared by its half-diagonal because
+    // the rotation on the way out swings the corners wider than the box.
+    const rect = shoeRef.current?.getBoundingClientRect()
+    const halfSpan = rect ? Math.hypot(rect.width, rect.height) / 2 : Math.min(w, h) * 0.4
+    const cx = rect ? rect.left + rect.width / 2 : w / 2
+    const cy = rect ? rect.top + rect.height / 2 : h / 2
+
+    // Take the larger requirement on each axis so the same distance clears
+    // the edge whichever way the colourway is stepped, then the smaller of
+    // the two axes — clearing either one already puts the shoe out of sight.
+    const reach = (centre: number, extent: number, shape: number) =>
+      (Math.max(centre, extent - centre) + halfSpan + OFFSCREEN_PAD) / shape
+    const travel = Math.min(reach(cx, w, DIAG_X), reach(cy, h, DIAG_Y))
+
     // Forward: in from top-right, out to bottom-left. Backward mirrors both.
-    const inFrom = { x: dir * w * 0.62, y: dir * -h * 0.72 }
-    const outTo = { x: dir * -w * 0.62, y: dir * h * 0.72 }
+    const inFrom = { x: dir * DIAG_X * travel, y: dir * -DIAG_Y * travel }
+    const outTo = { x: dir * -DIAG_X * travel, y: dir * DIAG_Y * travel }
 
     // Control points sit further out along the corner diagonal than the
     // straight-line midpoint, which is what bends the path into an arc.
@@ -102,7 +126,9 @@ export default function SneakerStage({ products, index, direction, onTransitionE
     const enterRot = dir * 22
     const exitRot = dir * -30
 
-    apply(shoeRef.current, { ...inFrom, rot: enterRot, scale: 0, opacity: 0 })
+    // starts at full size and fully opaque — it is off the edge of the screen,
+    // so there is nothing to hide, and it flies in rather than growing in
+    apply(shoeRef.current, { ...inFrom, rot: enterRot, scale: FLY_SCALE, opacity: 1 })
     apply(shadowRef.current, { ...inFrom, rot: 0, scale: 0.2, opacity: 0 }, true)
     apply(outShoeRef.current, { x: 0, y: 0, rot: 0, scale: 1, opacity: 1 })
     apply(outShadowRef.current, { x: 0, y: 0, rot: 0, scale: 1, opacity: 1 }, true)
@@ -120,7 +146,7 @@ export default function SneakerStage({ products, index, direction, onTransitionE
       const rot = enterRot * (1 - p)
       let scale: number
       if (te < SETTLE_FROM) {
-        scale = easeOutCubic(te / SETTLE_FROM)
+        scale = FLY_SCALE + (1 - FLY_SCALE) * easeOutCubic(te / SETTLE_FROM)
       } else {
         const ts = (te - SETTLE_FROM) / (1 - SETTLE_FROM)
         scale = springOvershoot(ts, OVERSHOOT)
@@ -129,7 +155,7 @@ export default function SneakerStage({ products, index, direction, onTransitionE
       // out on the swap and comes back up as the new shoe settles in
       if (glowRef.current) glowRef.current.style.opacity = String(0.15 + 0.85 * p)
 
-      const frame: Frame = { x, y, rot, scale, opacity: Math.min(1, te * 4) }
+      const frame: Frame = { x, y, rot, scale, opacity: 1 }
       apply(shoeRef.current, frame)
       apply(shadowRef.current, { x, y: y * 0.35, rot: 0, scale: 0.7 + 0.3 * p, opacity: p }, true)
 
@@ -138,12 +164,15 @@ export default function SneakerStage({ products, index, direction, onTransitionE
       const q = easeInCubic(tx)
       const ox = qbez(q, 0, outCtrl.x, outTo.x)
       const oy = qbez(q, 0, outCtrl.y, outTo.y)
+      // it leaves at very nearly full size and full opacity: the slide clips
+      // its own overflow, so the shoe genuinely exits past the edge instead of
+      // shrinking and dissolving somewhere over the middle of the screen
       apply(outShoeRef.current, {
         x: ox,
         y: oy,
         rot: exitRot * q,
-        scale: 1 - 0.65 * q,
-        opacity: 1 - q,
+        scale: 1 - (1 - FLY_SCALE) * q,
+        opacity: 1,
       })
       apply(
         outShadowRef.current,

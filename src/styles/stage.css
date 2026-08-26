@@ -1,3 +1,8 @@
+/* deliberately does NOT clip its own overflow: the stage is inset by the
+   slide's padding, so clipping here would slice the shoe a few dozen pixels
+   short of the screen edge on its way out. `.slide--hero` clips instead,
+   which is exactly the viewport, so the shoe leaves and returns past the
+   real edge of the screen. */
 .stage {
   position: absolute;
   inset: 0;
@@ -5,7 +10,6 @@
   display: grid;
   place-items: center;
   pointer-events: none;
-  overflow: hidden;
 }
 
 /* soft studio light behind the shoe: wide and weak, so it lifts the shoe off
