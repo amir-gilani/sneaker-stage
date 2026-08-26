@@ -12,25 +12,6 @@
   pointer-events: none;
 }
 
-/* soft studio light behind the shoe: wide and weak, so it lifts the shoe off
-   the flat colourway without reading as a white disc. sized in vh as well as
-   vw and faded with closest-side, or the stage's overflow slices it and
-   leaves a hard line across the top and bottom */
-.stage__glow {
-  position: absolute;
-  width: min(86vw, 1040px);
-  height: min(62vh, 620px);
-  margin-top: -2vh;
-  background: radial-gradient(
-    ellipse closest-side at 50% 50%,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.085) 34%,
-    rgba(255, 255, 255, 0.045) 62%,
-    rgba(255, 255, 255, 0.014) 84%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
 .stage__shoe,
 .stage__shadow {
   position: absolute;
@@ -72,11 +53,6 @@
     width: 54vw;
     height: 9vw;
     margin-top: 17vw;
-  }
-
-  .stage__glow {
-    width: 116vw;
-    height: min(52vh, 460px);
   }
 }
 

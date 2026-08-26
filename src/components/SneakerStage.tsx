@@ -67,7 +67,6 @@ export default function SneakerStage({ products, index, direction, onTransitionE
   const shadowRef = useRef<HTMLDivElement>(null)
   const outShoeRef = useRef<HTMLDivElement>(null)
   const outShadowRef = useRef<HTMLDivElement>(null)
-  const glowRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef<number>(0)
   const dirRef = useRef<Direction>(direction)
   dirRef.current = direction
@@ -151,10 +150,6 @@ export default function SneakerStage({ products, index, direction, onTransitionE
         const ts = (te - SETTLE_FROM) / (1 - SETTLE_FROM)
         scale = springOvershoot(ts, OVERSHOOT)
       }
-      // with no shoe over it the halo reads as a bare white blob, so it dips
-      // out on the swap and comes back up as the new shoe settles in
-      if (glowRef.current) glowRef.current.style.opacity = String(0.15 + 0.85 * p)
-
       const frame: Frame = { x, y, rot, scale, opacity: 1 }
       apply(shoeRef.current, frame)
       apply(shadowRef.current, { x, y: y * 0.35, rot: 0, scale: 0.7 + 0.3 * p, opacity: p }, true)
@@ -185,7 +180,6 @@ export default function SneakerStage({ products, index, direction, onTransitionE
       } else {
         apply(shoeRef.current, { x: 0, y: 0, rot: 0, scale: 1, opacity: 1 })
         apply(shadowRef.current, { x: 0, y: 0, rot: 0, scale: 1, opacity: 1 }, true)
-        if (glowRef.current) glowRef.current.style.opacity = '1'
         setPair((prev) => ({ cur: prev.cur, out: null }))
         onTransitionEnd()
       }
@@ -201,8 +195,6 @@ export default function SneakerStage({ products, index, direction, onTransitionE
 
   return (
     <div className="stage">
-      <div className="stage__glow" ref={glowRef} aria-hidden="true" />
-
       {outgoing && (
         <>
           <div className="stage__shadow" ref={outShadowRef} />
