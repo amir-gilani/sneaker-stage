@@ -19,6 +19,12 @@ const OVERSHOOT = 0.27
 const SETTLE_FROM = 0.55
 /** Leftward nudge of the entry arc, as a fraction of the viewport width. */
 const ARC_SHIFT_X = -0.2
+/** How far the exit arc bows sideways off its straight line, as a fraction of
+ *  the viewport width. Purely horizontal on purpose: bowing the control point
+ *  *back* along the path is what holds the shoe high and then drops it all at
+ *  once, which is the nose-dive. A sideways bow curves the exit without
+ *  touching how evenly it loses height. */
+const EXIT_BOW_X = -0.34
 /** Shape of the corner diagonal the shoe travels along. */
 const DIAG_X = 0.62
 const DIAG_Y = 0.72
@@ -120,10 +126,27 @@ export default function SneakerStage({ products, index, direction, onTransitionE
       x: inFrom.x * 0.72 + w * 0.16 * dir + ARC_SHIFT_X * w,
       y: inFrom.y * 0.78 - h * 0.14 * dir,
     }
-    const outCtrl = { x: outTo.x * 0.42 - w * 0.14 * dir, y: outTo.y * 0.34 - h * 0.18 * dir }
+    // The two exits are shaped differently on purpose.
+    //
+    // Forward, the shoe leaves down and to the left: chord midpoint bowed
+    // sideways, which swings it out past the social row on its way off the
+    // bottom-left corner. Sitting the control at the chord's own height is
+    // what keeps the descent even — the original weights put it a seventh of
+    // the way down while x was already two fifths across, so the shoe hung
+    // and then fell off a cliff.
+    //
+    // Backward, it leaves up and to the right, and keeps the original arc.
+    // The sideways bow is screen-space, not mirrored, so applying it to this
+    // one would drag it left — across the frame it is trying to leave.
+    const outCtrl =
+      dir === 1
+        ? { x: outTo.x * 0.5 + EXIT_BOW_X * w, y: outTo.y * 0.5 }
+        : { x: outTo.x * 0.42 - w * 0.14 * dir, y: outTo.y * 0.34 - h * 0.18 * dir }
 
     const enterRot = dir * 22
-    const exitRot = dir * -30
+    // shallower tip on the way out — a hard pitch-over on top of the fall was
+    // the other half of what read as a dive
+    const exitRot = dir === 1 ? -16 : 30
 
     // starts at full size and fully opaque — it is off the edge of the screen,
     // so there is nothing to hide, and it flies in rather than growing in
