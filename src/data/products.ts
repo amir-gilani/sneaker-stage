@@ -42,6 +42,30 @@ export const products: Product[] = [
     description:
       'A neutral colorway built for everyday wear, with a lightweight structure and flexible support that moves with you.',
   },
+  {
+    id: 'ember-orange',
+    name: 'Ember Orange',
+    bg: '#ef7444',
+    accent: '#5a1c0b',
+    // the base shot sits around 210deg, which is how Volt Green lands on 102
+    // with -108; +158 carries the same hue the long way round to a warm 8
+    tint: 'hue-rotate(158deg) saturate(1.7)',
+    price: '$186.00',
+    description:
+      'A warm-weather take on the silhouette, with a breathable upper and the same Air unit tuned for long days on hard ground.',
+  },
+  {
+    id: 'iris-purple',
+    name: 'Iris Purple',
+    bg: '#9a7bef',
+    accent: '#2b1a63',
+    // +62 off the base 210deg lands on 272 — far enough from Ocean Blue that
+    // the two never read as the same shoe a shade apart
+    tint: 'hue-rotate(62deg) saturate(1.5)',
+    price: '$174.00',
+    description:
+      'A cleaner build with a suede-trimmed upper, cut low at the collar so it sits close and moves easily off the court.',
+  },
 ]
 
 export const sizes = ['9', '10', '11'] as const
