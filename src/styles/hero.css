@@ -6,60 +6,71 @@
   /* drops in line with the size picker on the right */
   margin-top: clamp(48px, 11vh, 120px);
   max-width: 400px;
-  /* one soft reveal for the whole block instead of per-line effects */
-  animation: copy-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .copy__eyebrow {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
+  animation: copy-fade 700ms ease both;
 }
 
 .copy__title {
   margin: 0;
   font-family: var(--font-body);
-  font-weight: 700;
-  font-size: clamp(2.1rem, 4vw, 3.4rem);
-  line-height: 1.1;
-  letter-spacing: -0.035em;
+  /* light enough to sit next to the serif italic without shouting over it —
+     the tight tracking that a bold needs would clot at this weight */
+  font-weight: 500;
+  font-size: clamp(2.2rem, 4.2vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* the window each headline line rises through. The padding/negative-margin
+   pair gives the italic serif its overhang back — plain overflow:hidden
+   would shave the strokes that lean outside the text box */
+.copy__line {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0.1em 0.08em;
+  margin: -0.06em -0.1em -0.08em;
+}
+
+.copy__line > span {
+  display: block;
+  animation: line-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.copy__line:nth-child(2) > span {
+  animation-delay: 100ms;
 }
 
 /* the whole idea of the headline: one word set in italic serif, so the
    contrast between the two faces carries it — no colour, no decoration */
 .copy__title-accent {
-  display: block;
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  font-size: 1.16em;
+  font-size: 1.18em;
   line-height: 1;
   letter-spacing: -0.01em;
 }
 
-.copy__lede {
-  margin: 20px 0 0;
-  max-width: 34ch;
-  font-size: 0.82rem;
-  line-height: 1.75;
-  color: var(--muted);
-}
-
 .copy__meta {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 26px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
+  align-items: baseline;
+  gap: 18px;
+  margin-top: 30px;
+  animation: copy-fade 700ms ease both;
+  animation-delay: 260ms;
 }
 
 .copy__price {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
@@ -68,32 +79,45 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   letter-spacing: 0.02em;
   color: var(--muted);
 }
 
+/* the one mark carrying the live colourway. It is also the only thing in the
+   copy that reacts to a shoe change, and it does it by easing from the old
+   colour to the new one — no text fades out, nothing is ever blank */
 .copy__dot {
   width: 9px;
   height: 9px;
   border-radius: 50%;
+  background: var(--accent);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
   transition: background-color var(--bg-transition);
 }
 
-@keyframes copy-in {
+@keyframes line-rise {
   from {
-    opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(108%);
   }
   to {
-    opacity: 1;
     transform: none;
   }
 }
 
+@keyframes copy-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .copy {
+  .copy__eyebrow,
+  .copy__meta,
+  .copy__line > span {
     animation: none;
   }
 }
@@ -112,7 +136,7 @@
 .picker__label {
   margin: 0 0 12px;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.76rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -127,8 +151,8 @@
 .size-btn {
   position: relative;
   z-index: 0;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
@@ -136,7 +160,7 @@
   background: transparent;
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.9rem;
   line-height: 1;
   opacity: 0.7;
   transition: opacity 200ms ease, border-color 200ms ease,
@@ -182,7 +206,7 @@
 
 .picker__note {
   margin: 12px 0 0;
-  font-size: 0.7rem;
+  font-size: 0.84rem;
   letter-spacing: 0.01em;
   color: var(--muted);
 }
@@ -381,7 +405,7 @@
 
 .controls__count {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
   color: var(--muted);
 }

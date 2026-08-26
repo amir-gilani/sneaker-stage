@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { CSSProperties } from 'react'
 import type { Product } from '../data/products'
 import { sizes } from '../data/products'
 import '../styles/hero.css'
@@ -33,20 +34,27 @@ export default function ProductHero({
 
   return (
     <>
-      <div className="copy">
+      {/* Flat type on the colour field — no rules, chips or panels. Nothing
+          here is keyed on the product, so switching colourway only swaps the
+          words in place: the block never fades out and back in. */}
+      <div className="copy" style={{ '--accent': product.accent } as CSSProperties}>
         <p className="copy__eyebrow">Air Max Dn SE</p>
 
+        {/* each line rises out of its own clipped window, once, on load —
+            the only effect the block gets, and it never replays */}
         <h1 className="copy__title">
-          Step light,
-          <span className="copy__title-accent">move loud</span>
+          <span className="copy__line">
+            <span>Step light,</span>
+          </span>
+          <span className="copy__line">
+            <span className="copy__title-accent">move loud</span>
+          </span>
         </h1>
-
-        <p className="copy__lede">{product.description}</p>
 
         <div className="copy__meta">
           <span className="copy__price">{product.price}</span>
           <span className="copy__colour">
-            <span className="copy__dot" style={{ background: product.accent }} aria-hidden="true" />
+            <span className="copy__dot" aria-hidden="true" />
             {product.name}
           </span>
         </div>
