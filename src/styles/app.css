@@ -38,6 +38,9 @@
   font-size: clamp(5rem, 21vw, 19rem);
   letter-spacing: -0.04em;
   line-height: 1;
+  /* stretched taller, width left exactly as the type sets it — scaling both
+     axes would widen the mark as well, and it already spans the frame */
+  transform: scaleY(1.28);
   color: #000;
   opacity: 0.08;
   user-select: none;

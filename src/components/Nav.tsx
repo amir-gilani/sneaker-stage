@@ -3,7 +3,7 @@ import type { CartLine } from '../data/cart'
 import { cartCount, cartTotal, formatCents } from '../data/cart'
 import '../styles/nav.css'
 
-const links = ['Products', 'About', 'Category', 'Contact']
+const links = ['Air Max', 'Jordan', 'Dunk', 'Running']
 
 interface Props {
   cart: CartLine[]
