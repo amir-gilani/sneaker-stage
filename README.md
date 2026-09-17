@@ -3,7 +3,7 @@
 
 An animated sneaker product page. Five colourways, and the product shot flies off the edge of the screen and back on a measured arc every time you change one — written against `requestAnimationFrame` and a quadratic bezier, with no animation library.
 
-![The hero and the performance panel](docs/preview.png)
+![The hero, on the Ember Orange colourway](docs/preview.png)
 
 ## Demo
 
