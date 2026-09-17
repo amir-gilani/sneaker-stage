@@ -1,4 +1,3 @@
-
 # Sneaker Stage
 
 An animated sneaker product page. Five colourways, and the product shot flies off the edge of the screen and back on a measured arc every time you change one — written against `requestAnimationFrame` and a quadratic bezier, with no animation library.
@@ -7,9 +6,7 @@ An animated sneaker product page. Five colourways, and the product shot flies of
 
 ## Demo
 
-<img width="800" height="361" alt="IMG_7352-ezgif com-video-to-gif-converter (1)" src="https://github.com/user-attachments/assets/3a1b2841-7422-41f3-a116-fa2bd5a02124" />
-
-![Changing colourways](docs/demo.gif)
+<img width="800" alt="Stepping through the colourways" src="https://github.com/user-attachments/assets/3a1b2841-7422-41f3-a116-fa2bd5a02124" />
 
 ## Running it
 
